@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Carbon Running Shoes | Performance Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6f8;
+      color: #111;
+      line-height: 1.6;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #020617;
+      padding: 1rem 2rem;
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #22c55e;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .spacer {
+      height: 70px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #020617, #1e40af);
+      color: white;
+      padding: 70px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      max-width: 800px;
+      margin: auto;
+      opacity: 0.95;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    section {
+      background: white;
+      padding: 35px;
+      margin-bottom: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+      color: #1e40af;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      border-left: 5px solid #22c55e;
+      padding-left: 15px;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      max-width: 100%;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 8px;
+    }
+
+    .tableau-container {
+      margin: 30px 0;
+      padding: 20px;
+      background: #f9fafb;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .shoe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .shoe-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #ffffff;
+      transition: transform 0.2s ease;
+    }
+
+    .shoe-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .shoe-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .shoe-card div {
+      padding: 20px;
+    }
+
+    .shoe-card h3 {
+      margin-top: 0;
+      color: #020617;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #22c55e;
+      color: white;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      text-align: center;
+      color: #666;
+      font-size: 0.8rem;
+      margin: 50px 0;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #22c55e;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .back-to-top:hover {
+      background: #16a34a;
+      transform: scale(1.1);
+    }
+
+    .quick-nav {
+      background: #eff6ff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      border-left: 4px solid #3b82f6;
+    }
+
+    .quick-nav h3 {
+      color: #1e40af;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+
+    .quick-nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .quick-nav li {
+      margin: 0;
+    }
+
+    .quick-nav a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .quick-nav a:hover {
+      color: #1e40af;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+  <a href="cv.html">→ My Personal Information (CV)</a> | 
+  <a href="video.html">Find Your Perfect Shoe</a>
+</nav>
+
+<div class="spacer"></div>
+
+<header id="top">
+  <h1>Carbon Running Shoes</h1>
+  <p>
+    Carbon-plated running shoes have revolutionized distance running by enhancing propulsion,
+    improving running economy, and reducing muscle fatigue. This guide explains how they work
+    and which models suit different runners and budgets.
+  </p>
+</header>
+
+<div class="container">
+
+<div class="quick-nav">
+  <h3>📍 Quick Navigation</h3>
+  <ul>
+    <li><a href="#what-are">What Are Carbon Shoes?</a></li>
+    <li><a href="#who-should">Who Should Use Them?</a></li>
+    <li><a href="#top-shoes">Top Shoes</a></li>
+    <li><a href="#choosing">Choosing Guide</a></li>
+    <li><a href="#history">History Data</a></li>
+  </ul>
+</div>
+
+<section id="what-are">
+  <h2>What Are Carbon Running Shoes?</h2>
+  <p>
+    Carbon running shoes incorporate a rigid carbon-fiber plate embedded in the midsole.
+    This plate increases energy return, stabilizes the foot, and improves running efficiency,
+    especially at faster paces.
+  </p>
+  <p>
+    Originally designed for elite marathoners, carbon shoes are now accessible to recreational
+    runners seeking performance gains during races and speed-focused training sessions.
+  </p>
+  
+  <div class="video-container">
+    <iframe src="https://www.youtube.com/embed/Kh7xi23fI6E?si=NR0uAhfsC_LYsl2H" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
+</section>
+
+<section id="who-should">
+  <h2>Who Should Use Carbon Shoes?</h2>
+  <p>
+    Carbon-plated shoes are best suited for runners with solid biomechanics and consistent training
+    backgrounds. They are ideal for racing and tempo runs rather than daily mileage.
+  </p>
+  <ul>
+    <li>Intermediate to advanced runners</li>
+    <li>Runners training for 5km to marathon distances</li>
+    <li>Athletes prioritizing speed, efficiency, and race performance</li>
+  </ul>
+</section>
+
+<section id="top-shoes">
+  <h2>Top Carbon Running Shoes</h2>
+
+  <div class="shoe-grid">
+
+    <div class="shoe-card">
+      <img src="https://believeintherun.com/wp-content/uploads/2023/03/nike-vaporfly-next-3-feature.jpg" alt="Nike Vaporfly Next%">
+      <div>
+        <span class="badge">Elite</span>
+        <h3>Nike Vaporfly Next%</h3>
+        <p>
+          Industry benchmark carbon shoe featuring ZoomX foam and aggressive propulsion.
+          Widely used by professional marathon runners.
+        </p>
+        <p><strong>Best for:</strong> Competitive racing</p>
+        <p><strong>Price range:</strong> $$$</p>
+      </div>
+    </div>
+
+    <div class="shoe-card">
+      <img src="https://assets.adidas.com/images/w_1880,f_auto,q_auto/771391a024374a77947058d88baba6f9_9366/IG6431_HM1.jpg" alt="Adidas Adizero Adios Pro 3">
+      <div>
+        <span class="badge">Advanced</span>
+        <h3>Adidas Adizero Adios Pro 3</h3>
+        <p>
+          Carbon EnergyRods technology offering exceptional efficiency for long-distance racing.
+        </p>
+        <p><strong>Best for:</strong> Half & full marathon</p>
+        <p><strong>Price range:</strong> $$$</p>
+      </div>
+    </div>
+
+    <div class="shoe-card">
+      <img src="https://believeintherun.com/wp-content/uploads/2022/06/saucony-endorphin-pro-flateral.jpg" alt="Saucony Endorphin Pro 3">
+      <div>
+        <span class="badge">Intermediate</span>
+        <h3>Saucony Endorphin Pro 3</h3>
+        <p>
+          Lightweight carbon shoe with a more forgiving ride, ideal for runners transitioning
+          into carbon technology.
+        </p>
+        <p><strong>Best for:</strong> Speedwork & races</p>
+        <p><strong>Price range:</strong> $$</p>
+      </div>
+    </div>
+
+    <div class="shoe-card">
+      <img src="https://static.runnea.com/images/202402/vistazo-serie-metaspeed-paris-zapatillas-voladoras-apertura-1200x572x80xX.jpg" alt="ASICS Metaspeed Sky+">
+      <div>
+        <span class="badge">Stride Runners</span>
+        <h3>ASICS Metaspeed Sky+</h3>
+        <p>
+          Designed for runners who increase stride length rather than cadence when running faster.
+        </p>
+        <p><strong>Best for:</strong> Efficient stride runners</p>
+        <p><strong>Price range:</strong> $$$</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="choosing">
+  <h2>Choosing the Right Carbon Shoe</h2>
+  <p>
+    The ideal carbon shoe depends on your experience level, running mechanics, and budget.
+    Beginners should avoid daily use and focus on race-day efficiency.
+  </p>
+  <ul>
+    <li><strong>Beginner:</strong> Use sparingly, prioritize comfort and stability</li>
+    <li><strong>Intermediate:</strong> Ideal for races and tempo sessions</li>
+    <li><strong>Advanced:</strong> Maximize performance benefits with tailored shoe choice</li>
+  </ul>
+</section>
+
+<section id="history">
+  <h2>Running Shoes History</h2>
+  <p>
+    Explore the evolution and data insights of running shoes through this interactive visualization.
+  </p>
+  
+  <div class="tableau-container">
+    <div class='tableauPlaceholder' id='viz1765967777427' style='position: relative'>
+      <noscript>
+        <a href='#'>
+          <img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Li&#47;LinaRunningShoesHistory&#47;Dashboard1&#47;1_rss.png' style='border: none' />
+        </a>
+      </noscript>
+      <object class='tableauViz' style='display:none;'>
+        <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+        <param name='embed_code_version' value='3' />
+        <param name='site_root' value='' />
+        <param name='name' value='LinaRunningShoesHistory&#47;Dashboard1' />
+        <param name='tabs' value='no' />
+        <param name='toolbar' value='yes' />
+        <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Li&#47;LinaRunningShoesHistory&#47;Dashboard1&#47;1.png' />
+        <param name='animate_transition' value='yes' />
+        <param name='display_static_image' value='yes' />
+        <param name='display_spinner' value='yes' />
+        <param name='display_overlay' value='yes' />
+        <param name='display_count' value='yes' />
+        <param name='language' value='fr-FR' />
+      </object>
+    </div>
+  </div>
+</section>
+
+<script type='text/javascript'>
+  var divElement = document.getElementById('viz1765967777427');
+  var vizElement = divElement.getElementsByTagName('object')[0];
+  if (divElement.offsetWidth > 800) {
+    vizElement.style.width='1000px';
+    vizElement.style.height='827px';
+  } else if (divElement.offsetWidth > 500) {
+    vizElement.style.width='1000px';
+    vizElement.style.height='827px';
+  } else {
+    vizElement.style.width='100%';
+    vizElement.style.height='1477px';
+  }
+  var scriptElement = document.createElement('script');
+  scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+  vizElement.parentNode.insertBefore(scriptElement, vizElement);
+</script>
+
+</div>
+
+<a href="#top" class="back-to-top" title="Back to Top">↑</a>
+
+<footer>
+  © 2025 Carbon Running Shoes | IS201 Project
+</footer>
+
+</body>
+</html>

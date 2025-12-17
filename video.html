@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carbon Running Shoe Finder Game</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #1e3a8a, #1e40af, #0f172a);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: white;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: #bfdbfe;
+    }
+
+    .game-container {
+      position: relative;
+      width: 900px;
+      min-height: 500px;
+      background: linear-gradient(to bottom, #7dd3fc, #22c55e);
+      border-radius: 12px;
+      border: 4px solid white;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+
+    .background {
+      position: absolute;
+      inset: 0;
+    }
+
+    .sky {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, #7dd3fc, #38bdf8);
+    }
+
+    .cloud {
+      position: absolute;
+      width: 60px;
+      height: 30px;
+      background: white;
+      border-radius: 50px;
+      opacity: 0.7;
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: '';
+      position: absolute;
+      width: 40px;
+      height: 24px;
+      background: white;
+      border-radius: 50px;
+      top: 4px;
+    }
+
+    .cloud::before {
+      left: -15px;
+    }
+
+    .cloud::after {
+      right: -15px;
+    }
+
+    .track {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 128px;
+      background: linear-gradient(to top, #dc2626, #ef4444);
+    }
+
+    .track-line {
+      position: absolute;
+      width: 100%;
+      height: 4px;
+      background: white;
+      opacity: 0.8;
+    }
+
+    .finish-line {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 64px;
+      height: 128px;
+      background: repeating-linear-gradient(
+        0deg,
+        black 0px,
+        black 10px,
+        white 10px,
+        white 20px
+      );
+      opacity: 0.8;
+      display: none;
+    }
+
+    .finish-line.show {
+      display: block;
+    }
+
+    .runner {
+      display: none;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .start-screen {
+      background: rgba(0, 0, 0, 0.6);
+      text-align: center;
+      display: block;
+    }
+
+    .start-screen.active {
+      display: block;
+    }
+
+    .start-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .start-content .emoji {
+      font-size: 4rem;
+      animation: bounce 1s infinite;
+    }
+
+    .start-content h2 {
+      font-size: 2.5rem;
+      margin: 20px 0;
+    }
+
+    .start-content p {
+      color: #bfdbfe;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .info-box {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    .info-box h3 {
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+
+    .info-box ul {
+      list-style: none;
+      text-align: left;
+      color: #bfdbfe;
+    }
+
+    .info-box li {
+      padding: 8px 0;
+    }
+
+    .btn {
+      background: linear-gradient(to right, #22c55e, #3b82f6);
+      color: white;
+      border: none;
+      padding: 20px 48px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    }
+
+    .question-screen {
+      background: transparent;
+    }
+
+    .question-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 800px;
+      width: 100%;
+      border: 4px solid #3b82f6;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .progress-bar {
+      margin-bottom: 20px;
+    }
+
+    .progress-text {
+      color: #3b82f6;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(to right, #3b82f6, #22c55e);
+      border-radius: 4px;
+      transition: width 0.3s;
+    }
+
+    .question-card h2 {
+      color: #1f2937;
+      font-size: 1.8rem;
+      margin-bottom: 24px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      width: 100%;
+      padding: 16px;
+      text-align: left;
+      background: linear-gradient(to right, #eff6ff, #dbeafe);
+      border: 2px solid #93c5fd;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1f2937;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .option-btn:hover {
+      background: linear-gradient(to right, #dbeafe, #bfdbfe);
+      border-color: #3b82f6;
+      transform: scale(1.03);
+    }
+
+    .result-screen {
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .result-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 800px;
+      width: 100%;
+      border: 4px solid #fbbf24;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      color: #1f2937;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .result-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .trophy {
+      font-size: 4rem;
+      margin-bottom: 16px;
+    }
+
+    .result-header h2 {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    .result-header p {
+      color: #6b7280;
+    }
+
+    .shoe-card {
+      padding: 24px;
+      border-radius: 12px;
+      color: white;
+      margin-bottom: 24px;
+    }
+
+    .shoe-card.beginner {
+      background: linear-gradient(to bottom right, #fb923c, #ea580c);
+    }
+
+    .shoe-card.intermediate {
+      background: linear-gradient(to bottom right, #60a5fa, #2563eb);
+    }
+
+    .shoe-card.advanced {
+      background: linear-gradient(to bottom right, #4ade80, #16a34a);
+    }
+
+    .shoe-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: white;
+      color: #1f2937;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .shoe-card h3 {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+
+    .shoe-card .emoji {
+      font-size: 2rem;
+    }
+
+    .shoe-description {
+      margin-bottom: 16px;
+      opacity: 0.95;
+    }
+
+    .shoe-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .detail-box {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .detail-box .label {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+
+    .detail-box .value {
+      font-weight: bold;
+    }
+
+    .advice-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      color: #1f2937;
+    }
+
+    .advice-box .title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #1e40af;
+    }
+
+    .advice-box p {
+      color: #374151;
+      font-size: 0.95rem;
+    }
+
+    .info-section {
+      background: #f9fafb;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+
+    .info-section h4 {
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #1f2937;
+    }
+
+    .info-section p {
+      font-size: 0.9rem;
+      color: #4b5563;
+      margin-bottom: 8px;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      color: #bfdbfe;
+      font-size: 0.9rem;
+    }
+
+    .footer p {
+      margin: 8px 0;
+    }
+
+    @media (max-width: 768px) {
+      .game-container {
+        width: 100%;
+        max-width: 600px;
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+      }
+
+      .result-card {
+        padding: 20px;
+      }
+
+      .question-card {
+        max-width: 500px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>👟 Carbon Running Shoe Finder 👟</h1>
+    <p>Discover the perfect carbon-plated shoe for your running level!</p>
+    <div style="margin-top: 15px;">
+      <a href="is.html" style="color: #22c55e; text-decoration: none; font-weight: bold; font-size: 1rem;">← Back to Carbon Running Shoes</a>
+    </div>
+  </div>
+
+  <div class="game-container">
+    <!-- Background -->
+    <div class="background">
+      <div class="sky"></div>
+      <div class="cloud" style="left: 100px; top: 30px;"></div>
+      <div class="cloud" style="left: 250px; top: 50px;"></div>
+      <div class="cloud" style="left: 400px; top: 70px;"></div>
+      <div class="cloud" style="left: 550px; top: 90px;"></div>
+      
+      <div class="track">
+        <div class="track-line" style="top: 0;"></div>
+        <div class="track-line" style="top: 20px;"></div>
+        <div class="track-line" style="top: 40px;"></div>
+        <div class="track-line" style="top: 60px;"></div>
+        <div class="track-line" style="top: 80px;"></div>
+        <div class="track-line" style="top: 100px;"></div>
+        <div class="track-line" style="top: 120px;"></div>
+      </div>
+      
+      <div class="finish-line" id="finishLine"></div>
+    </div>
+
+    <!-- Runner -->
+    <div class="runner" id="runner">
+      <div class="runner-body">
+        <div class="runner-head"></div>
+        <div class="runner-arm left"></div>
+        <div class="runner-arm right"></div>
+        <div class="runner-leg left"></div>
+        <div class="runner-leg right"></div>
+      </div>
+      <div class="celebration" id="celebration">🎉</div>
+    </div>
+
+    <!-- Start Screen -->
+    <div class="screen start-screen active" id="startScreen">
+      <div class="start-content">
+        <div class="emoji">👟</div>
+        <h2>Find Your Perfect Carbon Shoe!</h2>
+        <p>Answer 5 questions about your running experience and goals to get a personalized carbon-plated shoe recommendation!</p>
+        
+        <div class="info-box">
+          <h3>You'll discover:</h3>
+          <ul>
+            <li>✅ The best carbon shoe for your level</li>
+            <li>✅ Expert usage recommendations</li>
+            <li>✅ Price range and features</li>
+            <li>✅ What makes carbon shoes special</li>
+          </ul>
+        </div>
+
+        <button class="btn" onclick="startGame()">
+          <span>▶</span>
+          START QUIZ
+        </button>
+      </div>
+    </div>
+
+    <!-- Question Screen -->
+    <div class="screen question-screen" id="questionScreen">
+      <div class="question-card">
+        <div class="progress-bar">
+          <div class="progress-text" id="progressText">Question 1 of 5</div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width: 20%;"></div>
+          </div>
+        </div>
+
+        <h2 id="questionText">Question will appear here</h2>
+
+        <div class="options" id="options">
+          <!-- Options will be inserted here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div class="screen result-screen" id="resultScreen">
+      <div class="result-card">
+        <div class="result-header">
+          <div class="trophy">🏆</div>
+          <h2>Your Perfect Shoe!</h2>
+          <p>Based on your running profile</p>
+        </div>
+
+        <div class="shoe-card" id="shoeCard">
+          <div class="shoe-header">
+            <div>
+              <span class="badge" id="shoeBadge">Level</span>
+              <h3 id="shoeName">Shoe Name</h3>
+            </div>
+            <div class="emoji">👟</div>
+          </div>
+          
+          <p class="shoe-description" id="shoeDescription">Description</p>
+
+          <div class="shoe-details">
+            <div class="detail-box">
+              <div class="label">Best For</div>
+              <div class="value" id="shoeBestFor">Use case</div>
+            </div>
+            <div class="detail-box">
+              <div class="label">Price Range</div>
+              <div class="value" id="shoePrice">Price</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="advice-box">
+          <div class="title">💡 Expert Advice:</div>
+          <p id="shoeAdvice">Advice text</p>
+        </div>
+
+        <div class="info-section">
+          <h4>What are Carbon Running Shoes?</h4>
+          <p>Carbon running shoes incorporate a rigid carbon-fiber plate embedded in the midsole. This plate increases energy return, stabilizes the foot, and improves running efficiency, especially at faster paces.</p>
+          <p>Originally designed for elite marathoners, carbon shoes are now accessible to recreational runners seeking performance gains during races and speed-focused training sessions.</p>
+        </div>
+
+        <button class="btn" onclick="startGame()" style="width: 100%;">
+          <span>↻</span>
+          Take Quiz Again
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Carbon-plated shoes are best suited for runners with solid biomechanics and consistent training backgrounds.</p>
+    <p>© 2025 Carbon Running Shoes Quiz Game</p>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is your running experience level?",
+        options: [
+          { text: "Beginner (Just started running)", value: "beginner", points: 1 },
+          { text: "Intermediate (1-3 years of consistent running)", value: "intermediate", points: 2 },
+          { text: "Advanced (3+ years, competitive racing)", value: "advanced", points: 3 }
+        ]
+      },
+      {
+        question: "What distances do you primarily train for?",
+        options: [
+          { text: "5K and under", value: "5k", points: 1 },
+          { text: "10K to Half Marathon", value: "half", points: 2 },
+          { text: "Full Marathon and beyond", value: "marathon", points: 3 }
+        ]
+      },
+      {
+        question: "How often do you run per week?",
+        options: [
+          { text: "1-2 times (recreational)", value: "low", points: 1 },
+          { text: "3-4 times (regular training)", value: "medium", points: 2 },
+          { text: "5+ times (serious training)", value: "high", points: 3 }
+        ]
+      },
+      {
+        question: "What's your primary running goal?",
+        options: [
+          { text: "Fitness and health", value: "fitness", points: 1 },
+          { text: "Improving times and PRs", value: "improvement", points: 2 },
+          { text: "Competitive racing", value: "racing", points: 3 }
+        ]
+      },
+      {
+        question: "What's your budget for racing shoes?",
+        options: [
+          { text: "Under $150 (Budget-friendly)", value: "budget", points: 1 },
+          { text: "$150-$200 (Mid-range)", value: "mid", points: 2 },
+          { text: "$200+ (Premium)", value: "premium", points: 3 }
+        ]
+      }
+    ];
+
+    const shoes = {
+      beginner: {
+        name: "Saucony Endorphin Pro 3",
+        level: "Intermediate",
+        description: "Lightweight carbon shoe with a more forgiving ride, ideal for runners transitioning into carbon technology.",
+        bestFor: "Speedwork & races",
+        price: "$$",
+        cssClass: "beginner",
+        advice: "Use sparingly, prioritize comfort and stability. Perfect for your first carbon shoe experience!"
+      },
+      intermediate: {
+        name: "Adidas Adizero Adios Pro 3",
+        level: "Advanced",
+        description: "Carbon EnergyRods technology offering exceptional efficiency for long-distance racing.",
+        bestFor: "Half & full marathon",
+        price: "$$$",
+        cssClass: "intermediate",
+        advice: "Ideal for races and tempo sessions. You're ready to maximize the benefits of carbon technology!"
+      },
+      advanced: {
+        name: "Nike Vaporfly Next%",
+        level: "Elite",
+        description: "Industry benchmark carbon shoe featuring ZoomX foam and aggressive propulsion. Widely used by professional marathon runners.",
+        bestFor: "Competitive racing",
+        price: "$$$",
+        cssClass: "advanced",
+        advice: "Maximize performance benefits with this elite choice. Perfect for serious competitive racing!"
+      }
+    };
+
+    let currentQuestion = 0;
+    let answers = [];
+    let runnerPosition = 50;
+
+    function startGame() {
+      currentQuestion = 0;
+      answers = [];
+      runnerPosition = 50;
+      
+      document.getElementById('startScreen').classList.remove('active');
+      document.getElementById('resultScreen').classList.remove('active');
+      document.getElementById('questionScreen').classList.add('active');
+      document.getElementById('runner').style.left = '50px';
+      document.getElementById('runner').classList.remove('celebrate');
+      document.getElementById('celebration').classList.remove('show');
+      document.getElementById('finishLine').classList.remove('show');
+      
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+      document.getElementById('progressFill').style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
+      document.getElementById('questionText').textContent = q.question;
+      
+      const optionsContainer = document.getElementById('options');
+      optionsContainer.innerHTML = '';
+      
+      q.options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = '<span>' + option.text + '</span><span>›</span>';
+        btn.onclick = () => selectOption(option);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectOption(option) {
+      answers.push(option);
+      
+      // Move runner forward
+      runnerPosition += 150;
+      if (runnerPosition > 650) runnerPosition = 650;
+      document.getElementById('runner').style.left = runnerPosition + 'px';
+      
+      setTimeout(() => {
+        if (currentQuestion < questions.length - 1) {
+          currentQuestion++;
+          showQuestion();
+        } else {
+          setTimeout(() => showResult(), 500);
+        }
+      }, 600);
+    }
+
+    function showResult() {
+      const totalPoints = answers.reduce((sum, answer) => sum + answer.points, 0);
+      const avgPoints = totalPoints / answers.length;
+      
+      let recommendation;
+      if (avgPoints <= 1.5) {
+        recommendation = shoes.beginner;
+      } else if (avgPoints <= 2.3) {
+        recommendation = shoes.intermediate;
+      } else {
+        recommendation = shoes.advanced;
+      }
+      
+      document.getElementById('questionScreen').classList.remove('active');
+      document.getElementById('resultScreen').classList.add('active');
+      document.getElementById('finishLine').classList.add('show');
+      document.getElementById('runner').classList.add('celebrate');
+      document.getElementById('celebration').classList.add('show');
+      
+      // Update result card
+      document.getElementById('shoeCard').className = 'shoe-card ' + recommendation.cssClass;
+      document.getElementById('shoeBadge').textContent = recommendation.level;
+      document.getElementById('shoeName').textContent = recommendation.name;
+      document.getElementById('shoeDescription').textContent = recommendation.description;
+      document.getElementById('shoeBestFor').textContent = recommendation.bestFor;
+      document.getElementById('shoePrice').textContent = recommendation.price;
+      document.getElementById('shoeAdvice').textContent = recommendation.advice;
+    }
+  </script>
+
+</body>
+</html>
